@@ -1,6 +1,8 @@
-package lp.kazuya.mediaview.Tools;
+package com.mediaview.mediaview.Tools;
 
 import android.util.Xml;
+
+import com.mediaview.mediaview.Model.Media;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -9,8 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import lp.kazuya.mediaview.Model.Media;
 
 /**
  * Created by Kazuya on 14/11/2014.

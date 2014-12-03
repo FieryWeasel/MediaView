@@ -1,6 +1,4 @@
-package lp.kazuya.mediaview.Tools;
-
-import android.os.Environment;
+package com.mediaview.mediaview.Tools;
 
 /**
  * Created by Kazuya on 14/11/2014.

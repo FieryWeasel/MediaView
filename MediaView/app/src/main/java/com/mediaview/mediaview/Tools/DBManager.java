@@ -1,4 +1,4 @@
-package lp.kazuya.mediaview.Tools;
+package com.mediaview.mediaview.Tools;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,9 +8,9 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.util.ArrayList;
+import com.mediaview.mediaview.Model.Media;
 
-import lp.kazuya.mediaview.Model.Media;
+import java.util.ArrayList;
 
 /**
  * Created by Kazuya on 14/11/2014.

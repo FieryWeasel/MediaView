@@ -1,19 +1,19 @@
-package lp.kazuya.mediaview.Tools.Tasks;
+package com.mediaview.mediaview.Tools.Tasks;
 
-import android.content.Context;
+
 import android.os.AsyncTask;
+
+import com.mediaview.mediaview.Model.Media;
+import com.mediaview.mediaview.Tools.Constants;
+import com.mediaview.mediaview.Tools.DownloadHelper;
+import com.mediaview.mediaview.Tools.Manager;
+import com.mediaview.mediaview.Tools.XmlParser;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
-import lp.kazuya.mediaview.Model.Media;
-import lp.kazuya.mediaview.Tools.Constants;
-import lp.kazuya.mediaview.Tools.DownloadHelper;
-import lp.kazuya.mediaview.Tools.Manager;
-import lp.kazuya.mediaview.Tools.XmlParser;
 
 
 public class DataInitializationTask {

@@ -1,21 +1,24 @@
-package lp.kazuya.mediaview.Activities;
+package com.mediaview.mediaview.Activities;
 
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.mediaview.mediaview.Model.Media;
+import com.mediaview.mediaview.R;
+import com.mediaview.mediaview.Tools.DBManager;
+import com.mediaview.mediaview.Tools.Manager;
+import com.mediaview.mediaview.Tools.Tasks.DataInitializationTask;
+
+
+
 import java.util.List;
 
-import lp.kazuya.mediaview.Model.Media;
-import lp.kazuya.mediaview.R;
-import lp.kazuya.mediaview.Tools.DBManager;
-import lp.kazuya.mediaview.Tools.Manager;
-import lp.kazuya.mediaview.Tools.Tasks.DataInitializationTask;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +39,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 

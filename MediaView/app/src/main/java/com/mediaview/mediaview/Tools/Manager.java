@@ -1,6 +1,6 @@
-package lp.kazuya.mediaview.Tools;
+package com.mediaview.mediaview.Tools;
 
-import lp.kazuya.mediaview.Model.Media;
+import com.mediaview.mediaview.Model.Media;
 
 /**
  * Created by Kazuya on 14/11/2014.

@@ -1,4 +1,4 @@
-package lp.kazuya.mediaview.Tools;
+package com.mediaview.mediaview.Tools;
 
 import android.content.Context;
 

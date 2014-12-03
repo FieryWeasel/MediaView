@@ -1,4 +1,4 @@
-package lp.kazuya.mediaview.Model;
+package com.mediaview.mediaview.Model;
 
 /**
  * Created by Kazuya on 14/11/2014.
