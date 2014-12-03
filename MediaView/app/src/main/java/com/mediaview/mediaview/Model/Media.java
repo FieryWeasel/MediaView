@@ -9,7 +9,7 @@ public class Media {
     private int version;
     private String name;
     private String url;
-    public enum EType{Image, Text, Video, Audio}
+    public enum EType{Image, Texte, Video, Audio}
     private EType type;
 
     public Media() {
@@ -42,7 +42,7 @@ public class Media {
                 ", version=" + version +
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
-                ", type=" + type +
+                ", type=" + type.toString() +
                 '}';
     }
 

@@ -19,31 +19,52 @@ import java.util.List;
 public class DataInitializationTask {
 
     private List<Media> medias;
+    private InitializationCallback mCallback;
 
-    public DataInitializationTask() {
+
+    public DataInitializationTask(InitializationCallback callback) {
+        mCallback = callback;
         new Task().execute();
     }
 
     private class Task extends AsyncTask<Void, Void, Void> {
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mCallback.preExecute();
+        }
+
+        @Override
         protected Void doInBackground(Void... voids) {
             InputStream stream = DownloadHelper.loadFile(Constants.FILE_URL);
-            try {
+
                 if(stream !=null)
                     medias = XmlParser.parse(stream);
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
+
+            for(Media media : medias)
+                Manager.getInstance().getDbManager().createMedia(media);
+
+            try {
+                stream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            for(Media media : medias)
-                Manager.get().getDbManager().createMedia(media);
-
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mCallback.postExecute();
+        }
+    }
+
+    public interface InitializationCallback{
+
+        public void postExecute();
+        public void preExecute();
 
     }
 }

@@ -11,38 +11,31 @@ public class Manager {
     private static Manager instance = null;
     private DBManager dbManager;
 
-    public static Manager get(){
+    public static Manager getInstance(){
         if(instance == null)
-            return new Manager();
+            instance = new Manager();
         return instance;
     }
 
     public String getStringFromEnum(Media.EType enumType){
-        switch(enumType){
-            case Image :
-                return "image";
-            case Text :
-                return "text";
-            case Video :
-                return "video";
-            case Audio :
-                return "audio";
-            default :
-                return null;
-        }
+        if(enumType == null)
+            return "unknown";
+        else
+            return enumType.toString();
     }
 
     public Media.EType getEnumFromString(String enumType){
-        if(enumType.equalsIgnoreCase("image"))
+        if(enumType.equalsIgnoreCase("image")) {
             return Media.EType.Image;
-        if(enumType.equalsIgnoreCase("text"))
-            return Media.EType.Text;
-        if(enumType.equalsIgnoreCase("video"))
+        }else if(enumType.equalsIgnoreCase("texte")) {
+            return Media.EType.Texte;
+        }else if(enumType.equalsIgnoreCase("video")) {
             return Media.EType.Video;
-        if(enumType.equalsIgnoreCase("audio"))
+        }else if(enumType.equalsIgnoreCase("audio")) {
             return Media.EType.Audio;
-        else
+        }else {
             return null;
+        }
     }
 
     public DBManager getDbManager() {

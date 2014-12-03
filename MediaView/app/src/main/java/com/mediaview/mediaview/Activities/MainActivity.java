@@ -16,9 +16,25 @@ import com.mediaview.mediaview.tools.tasks.DataInitializationTask;
 
 import java.util.List;
 
-
-
 public class MainActivity extends Activity {
+
+    private TextView test;
+    private DataInitializationTask.InitializationCallback mCallback = new DataInitializationTask.InitializationCallback() {
+        @Override
+        public void postExecute() {
+            String text = "";
+            List<Media> medias = Manager.getInstance().getDbManager().getAllMedia();
+            for(Media media : medias){
+                text+=media.toString() + "\n\n";
+            }
+            test.setText(text);
+        }
+
+        @Override
+        public void preExecute() {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,20 +42,12 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         DBManager db = new DBManager(this);
-        Manager.get().setDbManager(db);
-        TextView test = (TextView) findViewById(R.id.test);
-        new DataInitializationTask();
+        Manager.getInstance().setDbManager(db);
+        test = (TextView) findViewById(R.id.test);
+        new DataInitializationTask(mCallback);
 
-        String text = "";
-        List<Media> medias = Manager.get().getDbManager().getAllMedia();
-        for(Media media : medias){
-            text+=media.toString() + "\n";
-        }
-        test.setText(text);
+
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

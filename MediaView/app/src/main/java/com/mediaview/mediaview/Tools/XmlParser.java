@@ -22,63 +22,82 @@ public class XmlParser {
     private static final String ELEMENT = "media";
     private static final String ROOT_ELEMENT = "medias";
 
-    public static List<Media> parse(InputStream in) throws XmlPullParserException, IOException {
+    public static List<Media> parse(InputStream in){
+        XmlPullParser parser = Xml.newPullParser();
         try {
-            XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(in, null);
-            parser.nextTag();
-            return readFeed(parser);
-        } finally {
-            in.close();
+
+
+
+
+//            parser.nextTag();
+//
+//            in.close();
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
         }
+        return parseXML(parser);
+//        return readFeed(parser);
     }
 
-    private static List<Media> readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
-        List<Media> medias = new ArrayList<Media>();
+    private static List<Media> parseXML(XmlPullParser parser) {
 
-        parser.require(XmlPullParser.START_TAG, ns, ROOT_ELEMENT);
-        while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.getEventType() != XmlPullParser.START_TAG) {
-                continue;
+        List<Media> medias = null;
+
+        try{
+            int eventType = parser.getEventType();
+            Media currentMedia = null;
+            int id = 0;
+
+            while (eventType != XmlPullParser.END_DOCUMENT){
+                String name = null;
+                switch (eventType){
+                    case XmlPullParser.START_DOCUMENT:
+
+                        medias = new ArrayList();
+                        break;
+
+                    case XmlPullParser.START_TAG:
+
+                        name = parser.getName();
+
+                        if (name.equalsIgnoreCase(ELEMENT)){
+
+                            currentMedia = new Media();
+
+                            currentMedia.setId(++id);
+
+                            currentMedia.setName(parser.getAttributeValue(null, "name"));
+
+                            currentMedia.setType(Manager.getInstance().getEnumFromString(parser.getAttributeValue(null, "type")));
+
+                            currentMedia.setUrl(parser.getAttributeValue(null, "path"));
+
+                            currentMedia.setVersion(Integer.parseInt(parser.getAttributeValue(null, "versionCode")));
+
+                            medias.add(currentMedia);
+
+                        }
+                        break;
+
+                    case XmlPullParser.END_TAG:
+
+                        name = parser.getName();
+                        break;
+                }
+                eventType = parser.next();
+
             }
-            String name = parser.getName();
-            // Starts by looking for the entry tag
-            if (name.equals(ELEMENT)) {
-                medias.add(readEntry(parser));
-            } else {
-                skip(parser);
-            }
+
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         return medias;
+
     }
 
-    // Parses the contents of an entry. If it encounters a title, summary, or link tag, hands them off
-    // to their respective "read" methods for processing. Otherwise, skips the tag.
-    private static Media readEntry(XmlPullParser parser) throws XmlPullParserException, IOException {
-
-            int version = Integer.parseInt(parser.getAttributeValue(1));
-            String name = parser.getAttributeValue(0);
-            String url = parser.getAttributeValue(2);
-            String type = parser.getAttributeValue(3);
-
-        return new Media(version, name, url, Manager.get().getEnumFromString(type));
-    }
-
-    private static void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
-        if (parser.getEventType() != XmlPullParser.START_TAG) {
-            throw new IllegalStateException();
-        }
-        int depth = 1;
-        while (depth != 0) {
-            switch (parser.next()) {
-                case XmlPullParser.END_TAG:
-                    depth--;
-                    break;
-                case XmlPullParser.START_TAG:
-                    depth++;
-                    break;
-            }
-        }
-    }
 }

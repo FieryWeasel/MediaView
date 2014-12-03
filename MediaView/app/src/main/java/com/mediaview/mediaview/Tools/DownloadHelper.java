@@ -24,6 +24,7 @@ public class DownloadHelper {
 
             //set up some things on the connection
             urlConnection.setRequestMethod("GET");
+            urlConnection.setDoOutput(true);
 
             //and connect!
             urlConnection.connect();
