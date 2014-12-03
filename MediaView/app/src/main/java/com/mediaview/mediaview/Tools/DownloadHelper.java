@@ -1,6 +1,4 @@
-package com.mediaview.mediaview.Tools;
-
-import android.content.Context;
+package com.mediaview.mediaview.tools;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

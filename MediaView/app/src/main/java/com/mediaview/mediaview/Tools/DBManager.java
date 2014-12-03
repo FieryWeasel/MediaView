@@ -1,4 +1,4 @@
-package com.mediaview.mediaview.Tools;
+package com.mediaview.mediaview.tools;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.mediaview.mediaview.Model.Media;
+import com.mediaview.mediaview.model.Media;
 
 import java.util.ArrayList;
 

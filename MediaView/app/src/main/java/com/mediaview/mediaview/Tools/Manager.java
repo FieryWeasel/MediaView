@@ -1,6 +1,6 @@
-package com.mediaview.mediaview.Tools;
+package com.mediaview.mediaview.tools;
 
-import com.mediaview.mediaview.Model.Media;
+import com.mediaview.mediaview.model.Media;
 
 /**
  * Created by Kazuya on 14/11/2014.

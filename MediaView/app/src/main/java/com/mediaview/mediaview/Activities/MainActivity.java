@@ -1,4 +1,4 @@
-package com.mediaview.mediaview.Activities;
+package com.mediaview.mediaview.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,11 +6,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.mediaview.mediaview.Model.Media;
+import com.mediaview.mediaview.model.Media;
 import com.mediaview.mediaview.R;
-import com.mediaview.mediaview.Tools.DBManager;
-import com.mediaview.mediaview.Tools.Manager;
-import com.mediaview.mediaview.Tools.Tasks.DataInitializationTask;
+import com.mediaview.mediaview.tools.DBManager;
+import com.mediaview.mediaview.tools.Manager;
+import com.mediaview.mediaview.tools.tasks.DataInitializationTask;
 
 
 
