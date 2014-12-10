@@ -19,11 +19,9 @@ import java.util.List;
 public class DataInitializationTask {
 
     private List<Media> medias;
-    private InitializationCallback mCallback;
 
 
-    public DataInitializationTask(InitializationCallback callback) {
-        mCallback = callback;
+    public DataInitializationTask() {
         new Task().execute();
     }
 
@@ -32,7 +30,7 @@ public class DataInitializationTask {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mCallback.preExecute();
+
         }
 
         @Override
@@ -45,6 +43,8 @@ public class DataInitializationTask {
             for(Media media : medias)
                 Manager.getInstance().getDbManager().createMedia(media);
 
+            Manager.getInstance().setAllMedias(medias);
+
             try {
                 stream.close();
             } catch (IOException e) {
@@ -54,17 +54,6 @@ public class DataInitializationTask {
             return null;
         }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            mCallback.postExecute();
-        }
     }
 
-    public interface InitializationCallback{
-
-        public void postExecute();
-        public void preExecute();
-
-    }
 }
