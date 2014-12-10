@@ -1,8 +1,11 @@
 package com.mediaview.mediaview.Activities;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -22,9 +25,14 @@ import com.mediaview.mediaview.Fragments.MediasListFragment;
 import com.mediaview.mediaview.Fragments.MediasViewFragment;
 import com.mediaview.mediaview.Fragments.nav_drawer.ObjectDrawerItem;
 import com.mediaview.mediaview.Fragments.nav_drawer.DrawerItemCustomAdapter;
+import com.mediaview.mediaview.Tools.Constants;
 import com.mediaview.mediaview.Tools.DBManager;
 import com.mediaview.mediaview.Tools.Manager;
 import com.mediaview.mediaview.Tools.Services.DownloadService;
+import com.mediaview.mediaview.Tools.Services.UpDateReceiver;
+
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class MainActivity extends Activity implements MediasListFragment.OnElementSelectedListener {
@@ -45,6 +53,7 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
 
         DBManager db = new DBManager(this);
         Manager.getInstance().setDbManager(db);
+        initAlarmBroadcast();
 
         Intent intent = new Intent(this, DownloadService.class);
         startService(intent);
@@ -214,5 +223,22 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDrawerToggle.syncState();
+    }
+
+    private void initAlarmBroadcast(){
+        Intent intent = new Intent(this, UpDateReceiver.class);
+        intent.setAction(Constants.WAKE_TO_UPDATE);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 1);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarm.cancel(pendingIntent);
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 }

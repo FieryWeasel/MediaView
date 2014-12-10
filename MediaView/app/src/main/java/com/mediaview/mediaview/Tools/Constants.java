@@ -16,4 +16,5 @@ public class Constants {
     public static final String FILE_URL = "http://lionel.banand.free.fr/lp_iem/updaterLPIEM.php?serial=AAA&type=medias";
     public static final String MEDIA_URL = "http://lionel.banand.free.fr/lp_iem";
     public static final String LOGTAG = "tag";
+    public static final String WAKE_TO_UPDATE = "wake_to_update";
 }
