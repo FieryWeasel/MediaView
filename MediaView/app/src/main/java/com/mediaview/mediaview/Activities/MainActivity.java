@@ -3,6 +3,7 @@ package com.mediaview.mediaview.activities;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,9 @@ import com.mediaview.mediaview.fragments.MediasViewFragment;
 import com.mediaview.mediaview.fragments.nav_drawer.ObjectDrawerItem;
 import com.mediaview.mediaview.fragments.nav_drawer.DrawerItemCustomAdapter;
 import com.mediaview.mediaview.model.Media;
+import com.mediaview.mediaview.tools.DBManager;
+import com.mediaview.mediaview.tools.Manager;
+import com.mediaview.mediaview.tools.services.DownloadService;
 
 
 public class MainActivity extends Activity implements MediasListFragment.OnElementSelectedListener {
@@ -39,6 +43,12 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        DBManager db = new DBManager(this);
+        Manager.getInstance().setDbManager(db);
+
+        Intent intent = new Intent(this, DownloadService.class);
+        startService(intent);
+
         isTablet = getResources().getBoolean(R.bool.isTablet);
         if(isTablet){
             setContentView(R.layout.activity_main_double);
@@ -50,21 +60,6 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
         initComponent();
         initNavigationDrawer();
 
-        /*
-         
-         DBManager db = new DBManager(this);
-         Manager.get().setDbManager(db);
-         TextView test = (TextView) findViewById(R.id.test);
-         new DataInitializationTask();
-         
-         String text = "";
-         List<Media> medias = Manager.get().getDbManager().getAllMedia();
-         for(Media media : medias){
-         text+=media.toString() + "\n";
-         }
-         test.setText(text);
-         
-         */
     }
 
     private void initComponent(){

@@ -14,10 +14,7 @@ public class UpDateReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("LOL", "Recurring alarm; requesting download service.");
-        // start the download
-        Intent downloader = new Intent(context, DownloadService.class);
-        context.startService(downloader);
+
     }
 }
 

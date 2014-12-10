@@ -2,6 +2,8 @@ package com.mediaview.mediaview.tools;
 
 import com.mediaview.mediaview.model.Media;
 
+import java.util.List;
+
 /**
  * Created by Kazuya on 14/11/2014.
  * MediaView
@@ -10,6 +12,7 @@ public class Manager {
 
     private static Manager instance = null;
     private DBManager dbManager;
+    private List<Media> allMedias;
 
     public static Manager getInstance(){
         if(instance == null)
@@ -44,5 +47,13 @@ public class Manager {
 
     public void setDbManager(DBManager dbManager) {
         this.dbManager = dbManager;
+    }
+
+    public List<Media> getAllMedias() {
+        return allMedias;
+    }
+
+    public void setAllMedias(List<Media> allMedias) {
+        this.allMedias = allMedias;
     }
 }
