@@ -148,7 +148,7 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
                     type = Media.EType.Image;
                     break;
                 case 1:
-                    type = Media.EType.Text;
+                    type = Media.EType.Texte;
                     break;
                 case 2:
                     type = Media.EType.Audio;
