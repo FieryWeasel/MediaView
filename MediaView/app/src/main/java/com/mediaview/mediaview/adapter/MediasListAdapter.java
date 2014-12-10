@@ -1,15 +1,13 @@
-package com.mediaview.mediaview.adapter;
+package com.mediaview.mediaview.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mediaview.mediaview.R;
-import com.mediaview.mediaview.model.Media;
+import com.mediaview.mediaview.Model.Media;
 
 /**
  * Created by iem on 03/12/14.

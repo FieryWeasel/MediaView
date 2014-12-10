@@ -1,8 +1,8 @@
-package com.mediaview.mediaview.tools;
+package com.mediaview.mediaview.Tools;
 
 import android.util.Xml;
 
-import com.mediaview.mediaview.model.Media;
+import com.mediaview.mediaview.Model.Media;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

@@ -1,4 +1,4 @@
-package com.mediaview.mediaview.tools;
+package com.mediaview.mediaview.Tools;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

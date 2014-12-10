@@ -1,4 +1,4 @@
-package com.mediaview.mediaview.activities;
+package com.mediaview.mediaview.Activities;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -16,15 +16,15 @@ import android.widget.ListView;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 
+import com.mediaview.mediaview.Model.Media;
 import com.mediaview.mediaview.R;
-import com.mediaview.mediaview.fragments.MediasListFragment;
-import com.mediaview.mediaview.fragments.MediasViewFragment;
-import com.mediaview.mediaview.fragments.nav_drawer.ObjectDrawerItem;
-import com.mediaview.mediaview.fragments.nav_drawer.DrawerItemCustomAdapter;
-import com.mediaview.mediaview.model.Media;
-import com.mediaview.mediaview.tools.DBManager;
-import com.mediaview.mediaview.tools.Manager;
-import com.mediaview.mediaview.tools.services.DownloadService;
+import com.mediaview.mediaview.Fragments.MediasListFragment;
+import com.mediaview.mediaview.Fragments.MediasViewFragment;
+import com.mediaview.mediaview.Fragments.nav_drawer.ObjectDrawerItem;
+import com.mediaview.mediaview.Fragments.nav_drawer.DrawerItemCustomAdapter;
+import com.mediaview.mediaview.Tools.DBManager;
+import com.mediaview.mediaview.Tools.Manager;
+import com.mediaview.mediaview.Tools.Services.DownloadService;
 
 
 public class MainActivity extends Activity implements MediasListFragment.OnElementSelectedListener {

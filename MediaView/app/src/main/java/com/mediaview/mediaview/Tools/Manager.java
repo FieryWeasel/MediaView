@@ -1,6 +1,6 @@
-package com.mediaview.mediaview.tools;
+package com.mediaview.mediaview.Tools;
 
-import com.mediaview.mediaview.model.Media;
+import com.mediaview.mediaview.Model.Media;
 
 import java.util.List;
 

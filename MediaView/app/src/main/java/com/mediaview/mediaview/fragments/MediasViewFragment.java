@@ -1,9 +1,7 @@
-package com.mediaview.mediaview.fragments;
+package com.mediaview.mediaview.Fragments;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.mediaview.mediaview.Model.Media;
 import com.mediaview.mediaview.R;
-import com.mediaview.mediaview.model.Media;
 
 /**
  * Created by IEM on 14/11/2014.
@@ -38,7 +36,7 @@ public class MediasViewFragment extends Fragment {
             case Video:
                 setVisibility(View.VISIBLE, View.GONE, View.GONE);
                 break;
-            case Text:
+            case Texte:
                 setVisibility(View.GONE, View.VISIBLE, View.GONE);
                 break;
             case Image:

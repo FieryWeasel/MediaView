@@ -1,4 +1,4 @@
-package com.mediaview.mediaview.fragments.nav_drawer;
+package com.mediaview.mediaview.Fragments.nav_drawer;
 
 /**
  * Created by IEM on 14/11/2014.

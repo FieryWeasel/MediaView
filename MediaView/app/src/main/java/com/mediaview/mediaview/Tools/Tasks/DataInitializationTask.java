@@ -1,13 +1,14 @@
-package com.mediaview.mediaview.tools.tasks;
+package com.mediaview.mediaview.Tools.Tasks;
 
 
 import android.os.AsyncTask;
 
-import com.mediaview.mediaview.model.Media;
-import com.mediaview.mediaview.tools.Constants;
-import com.mediaview.mediaview.tools.DownloadHelper;
-import com.mediaview.mediaview.tools.Manager;
-import com.mediaview.mediaview.tools.XmlParser;
+
+import com.mediaview.mediaview.Model.Media;
+import com.mediaview.mediaview.Tools.Constants;
+import com.mediaview.mediaview.Tools.DownloadHelper;
+import com.mediaview.mediaview.Tools.Manager;
+import com.mediaview.mediaview.Tools.XmlParser;
 
 import org.xmlpull.v1.XmlPullParserException;
 

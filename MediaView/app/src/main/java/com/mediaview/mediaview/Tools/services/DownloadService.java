@@ -1,12 +1,11 @@
-package com.mediaview.mediaview.tools.services;
+package com.mediaview.mediaview.Tools.Services;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.mediaview.mediaview.model.Media;
-import com.mediaview.mediaview.tools.Manager;
-import com.mediaview.mediaview.tools.tasks.DataInitializationTask;
+
+import com.mediaview.mediaview.Tools.Tasks.DataInitializationTask;
 
 import java.util.List;
 

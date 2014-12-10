@@ -1,4 +1,4 @@
-package com.mediaview.mediaview.tools;
+package com.mediaview.mediaview.Tools;
 
 /**
  * Created by Kazuya on 14/11/2014.
