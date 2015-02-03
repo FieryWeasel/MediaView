@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.mediaview.mediaview.Model.Media;
+import com.mediaview.mediaview.model.Media;
 import com.mediaview.mediaview.R;
 import com.mediaview.mediaview.Adapter.MediasListAdapter;
 

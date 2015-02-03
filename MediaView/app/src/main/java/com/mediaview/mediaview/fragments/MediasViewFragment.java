@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.mediaview.mediaview.Model.Media;
+import com.mediaview.mediaview.model.Media;
 import com.mediaview.mediaview.R;
 
 /**

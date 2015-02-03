@@ -1,4 +1,4 @@
-package com.mediaview.mediaview.DAO.Accessor;
+package com.mediaview.mediaview.DAO.accessor;
 
 import android.content.ContentValues;
 import android.content.Context;
