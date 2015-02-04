@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.mediaview.mediaview.R;
-import com.mediaview.mediaview.Model.Media;
+import com.mediaview.mediaview.model.Media;
 
 /**
  * Created by iem on 03/12/14.

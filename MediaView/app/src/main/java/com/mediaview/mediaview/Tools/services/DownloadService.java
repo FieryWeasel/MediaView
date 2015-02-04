@@ -1,13 +1,11 @@
-package com.mediaview.mediaview.Tools.Services;
+package com.mediaview.mediaview.tools.services;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
 
-import com.mediaview.mediaview.Tools.Tasks.DataInitializationTask;
-
-import java.util.List;
+import com.mediaview.mediaview.tools.tasks.DataInitializationTask;
 
 public class DownloadService extends Service {
     public DownloadService() {
@@ -16,7 +14,7 @@ public class DownloadService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        new DataInitializationTask();
+        new DataInitializationTask(getApplicationContext());
 
         return super.onStartCommand(intent, flags, startId);
     }

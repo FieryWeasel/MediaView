@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,14 +19,14 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".Tools.Services.UpDateReceiver" >
+        <receiver android:name=".tools.Services.UpDateReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name=".Tools.Services.DownloadService">
+            android:name=".tools.Services.DownloadService">
         </service>
     </application>
 

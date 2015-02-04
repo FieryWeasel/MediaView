@@ -1,4 +1,4 @@
-package com.mediaview.mediaview.Tools;
+package com.mediaview.mediaview.tools;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 
-import com.mediaview.mediaview.Model.Media;
+import com.mediaview.mediaview.model.Media;
 
 import java.util.ArrayList;
 
@@ -79,105 +79,5 @@ public class DBManager extends SQLiteOpenHelper {
         }catch  (Exception e){
             Log.d(Constants.CREATION_TAG, "Erreur Sql : " + e.getMessage());
         }
-    }
-
-    public void createMedia(Media media){
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues values = new ContentValues(4);
-        values.put("mediaVersion", media.getVersion());
-        values.put("mediaName", media.getName());
-        values.put("mediaURL", media.getUrl());
-        values.put("mediaType", media.getType().toString());
-        long returnCode = db.insert("medias","mediaId",values);
-        if(returnCode == -1){
-            Log.e("Create_Media", "Error");
-        }
-    }
-
-    public void createMedia(int version, String name, String url, String type){
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues values = new ContentValues(4);
-        values.put("mediaVersion", version);
-        values.put("mediaName", name);
-        values.put("mediaURL", url);
-        values.put("mediaType", type);
-        db.insert("medias","mediaId",values);
-    }
-
-    public Media getMediaById(int id){
-        Media media = new Media();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c;
-        try {
-            c = db.rawQuery("SELECT * FROM medias WHERE mediaId = ?",new String[] {String.valueOf(id)} );
-            media.setVersion(c.getInt(1));
-            media.setName(c.getString(2));
-            media.setUrl(c.getString(3));
-            media.setType(Manager.getInstance().getEnumFromString(c.getString(4)));
-            c.close();
-        }
-        catch (SQLiteException e) {
-            Log.d("getMediaById", "error getting Media : " + e.getMessage());
-            media = null;
-        }
-        db.close();
-        return media;
-    }
-
-    public ArrayList<Media> getAllMedia(){
-        ArrayList<Media> medias = new ArrayList<Media>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Media media;
-        Cursor c;
-        try {
-            c = db.rawQuery("SELECT * FROM medias", null);
-            boolean eof = c.moveToFirst();
-            while(eof){
-                media = new Media();
-                media.setId(c.getInt(0));
-                media.setVersion(c.getInt(1));
-                media.setName(c.getString(2));
-                media.setUrl(c.getString(3));
-                media.setType(Manager.getInstance().getEnumFromString(c.getString(4)));
-                eof = c.moveToNext();
-                medias.add(media);
-            }
-
-            c.close();
-        }
-        catch (SQLiteException e) {
-            Log.d("getMediaById", "error getting Medias : " + e.getMessage());
-            medias = null;
-        }
-        db.close();
-        return medias;
-    }
-
-    public ArrayList<Media> getMediaByType(String mediaType){
-        ArrayList<Media> medias = new ArrayList<Media>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Media media;
-        Cursor c;
-        try {
-            c = db.rawQuery("SELECT * FROM medias WHERE mediaType = ?", new String[] {mediaType});
-            boolean eof = c.moveToFirst();
-            while(eof){
-                media = new Media();
-                media.setVersion(c.getInt(1));
-                media.setName(c.getString(2));
-                media.setUrl(c.getString(3));
-                media.setType(Manager.getInstance().getEnumFromString(c.getString(4)));
-                eof = c.moveToNext();
-                medias.add(media);
-            }
-
-            c.close();
-        }
-        catch (SQLiteException e) {
-            Log.d("getMediaById", "error getting Media : " + e.getMessage());
-            medias = null;
-        }
-        db.close();
-        return medias;
     }
 }

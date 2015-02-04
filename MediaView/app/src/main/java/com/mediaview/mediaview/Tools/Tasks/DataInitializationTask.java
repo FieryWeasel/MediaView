@@ -1,16 +1,16 @@
-package com.mediaview.mediaview.Tools.Tasks;
+package com.mediaview.mediaview.tools.tasks;
 
 
+import android.content.Context;
 import android.os.AsyncTask;
 
 
-import com.mediaview.mediaview.Model.Media;
-import com.mediaview.mediaview.Tools.Constants;
-import com.mediaview.mediaview.Tools.DownloadHelper;
-import com.mediaview.mediaview.Tools.Manager;
-import com.mediaview.mediaview.Tools.XmlParser;
-
-import org.xmlpull.v1.XmlPullParserException;
+import com.mediaview.mediaview.DAO.accessor.MediaDataAccessor;
+import com.mediaview.mediaview.model.Media;
+import com.mediaview.mediaview.tools.Constants;
+import com.mediaview.mediaview.tools.DownloadHelper;
+import com.mediaview.mediaview.tools.Manager;
+import com.mediaview.mediaview.tools.XmlParser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,10 +20,12 @@ import java.util.List;
 public class DataInitializationTask {
 
     private List<Media> medias;
+    private Context context;
 
 
-    public DataInitializationTask() {
+    public DataInitializationTask(Context context) {
         new Task().execute();
+        this.context = context;
     }
 
     private class Task extends AsyncTask<Void, Void, Void> {
@@ -31,7 +33,6 @@ public class DataInitializationTask {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
         }
 
         @Override
@@ -41,8 +42,9 @@ public class DataInitializationTask {
                 if(stream !=null)
                     medias = XmlParser.parse(stream);
 
+            MediaDataAccessor mediaAccessor = new MediaDataAccessor(context);
             for(Media media : medias)
-                Manager.getInstance().getDbManager().createMedia(media);
+                mediaAccessor.createMedia(media);
 
             Manager.getInstance().setAllMedias(medias);
 

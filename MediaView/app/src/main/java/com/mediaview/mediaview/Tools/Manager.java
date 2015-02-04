@@ -1,6 +1,6 @@
-package com.mediaview.mediaview.Tools;
+package com.mediaview.mediaview.tools;
 
-import com.mediaview.mediaview.Model.Media;
+import com.mediaview.mediaview.model.Media;
 
 import java.util.List;
 
@@ -39,14 +39,6 @@ public class Manager {
         }else {
             return null;
         }
-    }
-
-    public DBManager getDbManager() {
-        return dbManager;
-    }
-
-    public void setDbManager(DBManager dbManager) {
-        this.dbManager = dbManager;
     }
 
     public List<Media> getAllMedias() {
