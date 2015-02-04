@@ -2,10 +2,9 @@ package com.mediaview.mediaview.tools.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.util.Log;
 import android.widget.ProgressBar;
 
+import com.mediaview.mediaview.tools.Constants;
 import com.mediaview.mediaview.tools.DownloadHelper;
 
 import org.apache.http.util.ByteArrayBuffer;
@@ -22,12 +21,13 @@ import java.io.InputStream;
 public class DownloadTask extends AsyncTask<Object, Void, Void>{
 
     private Context mContext;
-    private String dirName = "MediaView";
 
-    private ProgressBar progressBar;
+    private ProgressBar mProgressBar;
+    private DownloadEventListener mListener;
 
-    public DownloadTask(Context mContext) {
+    public DownloadTask(Context mContext, DownloadEventListener listener) {
         this.mContext = mContext;
+        mListener = listener;
     }
 
     @Override
@@ -35,9 +35,10 @@ public class DownloadTask extends AsyncTask<Object, Void, Void>{
         String path = (String) voids[0];
         InputStream stream = DownloadHelper.loadFile(path);
         String fileName = path.substring(path.lastIndexOf("/"));
+        //mProgressBar = (ProgressBar)voids[1];
 
         File root = android.os.Environment.getExternalStorageDirectory();
-        File dir = new File(root.getAbsolutePath() + "/mnt/sdcard/" + dirName);
+        File dir = new File(root.getAbsolutePath() + Constants.DIRECTORY_SAVE);
         if(!dir.exists()){
             dir.mkdirs();
         }
@@ -57,7 +58,6 @@ public class DownloadTask extends AsyncTask<Object, Void, Void>{
             fos.write(baf.toByteArray());
             fos.flush();
             fos.close();
-            int dotindex = fileName.lastIndexOf('.');
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,4 +66,14 @@ public class DownloadTask extends AsyncTask<Object, Void, Void>{
         return null;
     }
 
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        mListener.hasFinishSuccessfully();
+    }
+
+    public interface DownloadEventListener{
+        public void hasFinishSuccessfully();
+        public void hasFinishWithError();
+    }
 }

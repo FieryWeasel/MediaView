@@ -36,7 +36,8 @@ public class DBManager extends SQLiteOpenHelper {
                 "mediaVersion INTEGER, " +
                 "mediaName VARCHAR(32), " +
                 "mediaURL VARCHAR(32)," +
-                "mediaType VARCHAR(32))";
+                "mediaType VARCHAR(32)," +
+                "mediaIsLocal VARCHAR(32))";
 
         // Creation tables
         try {
@@ -64,7 +65,8 @@ public class DBManager extends SQLiteOpenHelper {
                 "mediaVersion INTEGER, " +
                 "mediaName VARCHAR(32), " +
                 "mediaURL VARCHAR(32)," +
-                "mediaType VARCHAR(32))";
+                "mediaType VARCHAR(32), " +
+                "mediaIsLocal VARCHAR(32))";
 
         // Creation tables
         try {

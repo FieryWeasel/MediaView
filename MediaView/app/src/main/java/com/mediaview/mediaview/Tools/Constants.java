@@ -6,7 +6,7 @@ package com.mediaview.mediaview.tools;
  */
 public class Constants {
     //DATABASE
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 7;
     //LOG TAGS
     public static final String CREATION_TAG = "CREATION_ERROR";
     public static final String DL_ERROR = "DOWNLAOD_ERROR";
@@ -17,4 +17,5 @@ public class Constants {
     public static final String MEDIA_URL = "http://lionel.banand.free.fr/lp_iem";
     public static final String LOGTAG = "tag";
     public static final String WAKE_TO_UPDATE = "wake_to_update";
+    public static final String DIRECTORY_SAVE = "/MediaView";
 }
