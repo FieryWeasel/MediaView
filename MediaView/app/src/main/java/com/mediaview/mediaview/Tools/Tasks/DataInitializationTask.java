@@ -19,13 +19,19 @@ import java.util.List;
 
 public class DataInitializationTask {
 
+    public interface EventListener{
+        public void onFinished();
+    }
+
     private List<Media> medias;
     private Context context;
+    private EventListener listener = null;
 
 
-    public DataInitializationTask(Context context) {
+    public DataInitializationTask(Context context, EventListener listener) {
         new Task().execute();
         this.context = context;
+        this.listener = listener;
     }
 
     private class Task extends AsyncTask<Void, Void, Void> {
@@ -57,6 +63,11 @@ public class DataInitializationTask {
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            listener.onFinished();
+        }
     }
 
 }

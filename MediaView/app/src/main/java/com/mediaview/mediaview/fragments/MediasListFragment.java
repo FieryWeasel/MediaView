@@ -1,4 +1,4 @@
-package com.mediaview.mediaview.Fragments;
+package com.mediaview.mediaview.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -10,9 +10,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.mediaview.mediaview.DAO.accessor.MediaDataAccessor;
 import com.mediaview.mediaview.model.Media;
 import com.mediaview.mediaview.R;
-import com.mediaview.mediaview.Adapter.MediasListAdapter;
+import com.mediaview.mediaview.adapter.MediasListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,8 @@ public class MediasListFragment extends Fragment {
     }
 
     public void setMediaType(Media.EType type){
-        // TODO : Get the list of the elements to display
         this.type = type;
+        MediaDataAccessor mediaAccessor = new MediaDataAccessor(getActivity());
+        medias = mediaAccessor.getMediaByType(type.toString());
     }
 }

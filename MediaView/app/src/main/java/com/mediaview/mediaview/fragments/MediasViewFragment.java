@@ -1,4 +1,4 @@
-package com.mediaview.mediaview.Fragments;
+package com.mediaview.mediaview.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
