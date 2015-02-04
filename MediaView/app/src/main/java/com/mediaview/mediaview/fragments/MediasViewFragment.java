@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -23,6 +24,8 @@ public class MediasViewFragment extends Fragment {
     private ImageView UIImageView = null;
     private TextView UITextView = null;
     private VideoView UIVideoView = null;
+    private Button UIButtonDownload;
+    private Button UIButtonDelete;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,6 +53,8 @@ public class MediasViewFragment extends Fragment {
                 break;
         }
 
+        
+
         return rootView;
     }
 
@@ -57,12 +62,19 @@ public class MediasViewFragment extends Fragment {
         UIImageView = (ImageView) rootView.findViewById(R.id.media_view_image);
         UITextView = (TextView) rootView.findViewById(R.id.media_view_text);
         UIVideoView = (VideoView) rootView.findViewById(R.id.media_view_video);
+        UIButtonDownload = (Button) rootView.findViewById(R.id.btn_download);
+        UIButtonDelete = (Button) rootView.findViewById(R.id.btn_delete);
     }
 
     private void setVisibility(int image, int text, int video) {
         UIImageView.setVisibility(image);
         UITextView.setVisibility(text);
         UIVideoView.setVisibility(video);
+    }
+
+    private void buttonsVisibility(int down, int delete){
+        UIButtonDownload.setVisibility(down);
+        UIButtonDelete.setVisibility(delete);
     }
 
     public void setMedia(Media media){
