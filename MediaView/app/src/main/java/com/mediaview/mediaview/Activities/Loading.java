@@ -29,7 +29,6 @@ public class Loading extends Activity {
 
     private void loadDB() {
         Intent intent = new Intent(this, DownloadService.class);
-
         startService(intent);
     }
 
