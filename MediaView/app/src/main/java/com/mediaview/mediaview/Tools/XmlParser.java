@@ -74,14 +74,11 @@ public class XmlParser {
                                 currentMedia = new Media();
 
                                 currentMedia.setId(++id);
-
                                 currentMedia.setName(nameMedia);
-
                                 currentMedia.setType(Manager.getInstance().getEnumFromString(type));
-
                                 currentMedia.setUrl(path);
-
                                 currentMedia.setVersion(version);
+                                currentMedia.setLocal(false);
 
                                 medias.add(currentMedia);
                             }

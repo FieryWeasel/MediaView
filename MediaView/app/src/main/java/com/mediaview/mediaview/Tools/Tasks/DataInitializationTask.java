@@ -2,6 +2,8 @@ package com.mediaview.mediaview.tools.tasks;
 
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
 
@@ -43,6 +45,9 @@ public class DataInitializationTask {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            if(!isNetworkAvailable())
+                return null;
+
             InputStream stream = DownloadHelper.loadFile(Constants.FILE_URL);
 
             MediaDataAccessor mediaAccessor = new MediaDataAccessor(context);
@@ -67,6 +72,13 @@ public class DataInitializationTask {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             listener.onFinished();
+        }
+
+        private boolean isNetworkAvailable() {
+            ConnectivityManager connectivityManager
+                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
         }
     }
 

@@ -9,8 +9,10 @@ public class Media {
     private int version;
     private String name;
     private String url;
+
     public enum EType{Image, Texte, Video, Audio}
     private EType type;
+    private boolean isLocal;
 
     public Media() {
         this.setId(-1);
@@ -18,21 +20,24 @@ public class Media {
         this.setName("");
         this.setUrl("");
         this.setType(null);
+        this.setLocal(false);
     }
 
-    public Media(int version, String name, String url, EType type) {
+    public Media(int version, String name, String url, EType type, boolean isLocal) {
         this.setVersion(version);
         this.setName(name);
         this.setUrl(url);
         this.setType(type);
+        this.setLocal(isLocal);
     }
 
-    public Media(int id, int version, String name, String url, EType type) {
+    public Media(int id, int version, String name, String url, EType type, boolean isLocal) {
         this.setId(id);
         this.setVersion(version);
         this.setName(name);
         this.setUrl(url);
         this.setType(type);
+        this.setLocal(isLocal);
     }
 
     @Override
@@ -43,6 +48,7 @@ public class Media {
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
                 ", type=" + type.toString() +
+                ", isLocal=" + isLocal() +
                 '}';
     }
 
@@ -84,6 +90,14 @@ public class Media {
 
     public void setType(EType type) {
         this.type = type;
+    }
+
+    public boolean isLocal() {
+        return isLocal;
+    }
+
+    public void setLocal(boolean isLocal) {
+        this.isLocal = isLocal;
     }
 
 }
