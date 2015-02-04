@@ -21,11 +21,16 @@ import android.support.v4.widget.DrawerLayout;
 
 import com.mediaview.mediaview.model.Media;
 import com.mediaview.mediaview.R;
-import com.mediaview.mediaview.Fragments.MediasListFragment;
-import com.mediaview.mediaview.Fragments.MediasViewFragment;
-import com.mediaview.mediaview.Fragments.nav_drawer.ObjectDrawerItem;
-import com.mediaview.mediaview.Fragments.nav_drawer.DrawerItemCustomAdapter;
+import com.mediaview.mediaview.fragments.MediasListFragment;
+import com.mediaview.mediaview.fragments.MediasViewFragment;
+import com.mediaview.mediaview.fragments.nav_drawer.ObjectDrawerItem;
+import com.mediaview.mediaview.fragments.nav_drawer.DrawerItemCustomAdapter;
 import com.mediaview.mediaview.tools.Constants;
+<<<<<<< HEAD
+=======
+import com.mediaview.mediaview.tools.DBManager;
+import com.mediaview.mediaview.tools.Manager;
+>>>>>>> 26a475cda96d49a4116657689204582f5a2c6c89
 import com.mediaview.mediaview.tools.services.DownloadService;
 import com.mediaview.mediaview.tools.services.UpDateReceiver;
 
