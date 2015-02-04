@@ -12,8 +12,6 @@ import com.mediaview.mediaview.tools.DBManager;
 import com.mediaview.mediaview.tools.Manager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by iem on 10/12/14.
@@ -25,7 +23,7 @@ public class MediaDataAccessor {
     public static final String MEDIA_URL = "mediaURL";
     public static final String MEDIA_TYPE = "mediaType";
     public static final String MEDIA_ID = "mediaId";
-    public static final String MEDIA_LOCAL = "mediaLocal";
+    public static final String MEDIA_LOCAL = "mediaIsLocal";
     public static final String MEDIA_TABLE = "medias";
 
     private DBManager mDBManager;
