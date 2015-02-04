@@ -87,7 +87,23 @@ public class MediasViewFragment extends Fragment implements DownloadTask.Downloa
                 downloadMedia();
             }
         });
+        UIButtonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String filename = media.getUrl().substring(media.getUrl().lastIndexOf("/"));
+                File root = android.os.Environment.getExternalStorageDirectory();
+                File file = new File(root.getAbsolutePath() + Constants.DIRECTORY_SAVE + "/" + filename);
+                boolean deleted = file.delete();
+                if(deleted){
+                    deleteSuccessfull();
+                }else{
+                    deleteWithError();
+                }
+            }
+        });
     }
+
+
 
     private void downloadMedia() {
         if(media.getType() == Media.EType.Image){
@@ -138,7 +154,7 @@ public class MediasViewFragment extends Fragment implements DownloadTask.Downloa
                 myOutWriter.append(UITextView.getText());
                 myOutWriter.close();
                 fOut.close();
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
                 hasFinishWithError();
@@ -192,5 +208,17 @@ public class MediasViewFragment extends Fragment implements DownloadTask.Downloa
     @Override
     public void hasFinishWithError() {
         Toast.makeText(getActivity(), "Error while downloading", Toast.LENGTH_LONG).show();
+    }
+
+    private void deleteWithError() {
+        Toast.makeText(getActivity(), "Error while deleting", Toast.LENGTH_LONG).show();
+    }
+
+    private void deleteSuccessfull() {
+        Toast.makeText(getActivity(), "Delete complete", Toast.LENGTH_LONG).show();
+        MediaDataAccessor dataAccessor = new MediaDataAccessor(getActivity());
+        dataAccessor.deleteMediaLocal(media);
+
+        buttonsVisibility(View.VISIBLE, View.GONE);
     }
 }
