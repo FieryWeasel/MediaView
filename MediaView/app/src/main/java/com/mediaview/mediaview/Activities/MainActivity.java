@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 
+import com.mediaview.mediaview.fragments.HomeFragment;
 import com.mediaview.mediaview.model.Media;
 import com.mediaview.mediaview.R;
 import com.mediaview.mediaview.fragments.MediasListFragment;
@@ -57,6 +58,11 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
         }
         else
             setContentView(R.layout.activity_main_simple);
+
+        Fragment fragment = new HomeFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame_first, fragment).commit();
 
         initComponent();
         initNavigationDrawer();
@@ -182,12 +188,11 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
     private boolean createFragment(Fragment fragment, String tag) {
         boolean isFragementCreated = false;
 
-        // TODO : Créer le fragment sur le bon frameLayout en fonction de "isTablet" (first -> replace / second)
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .addToBackStack(tag)
-                    .replace(R.id.content_frame_first, fragment).commit();
+                    .replace(R.id.content_frame_first, fragment, tag).commit();
             isFragementCreated = true;
         } else {
             Log.e("MainActivity", "Error in creating fragment");
