@@ -27,7 +27,6 @@ import com.mediaview.mediaview.fragments.MediasViewFragment;
 import com.mediaview.mediaview.fragments.nav_drawer.ObjectDrawerItem;
 import com.mediaview.mediaview.fragments.nav_drawer.DrawerItemCustomAdapter;
 import com.mediaview.mediaview.tools.Constants;
-import com.mediaview.mediaview.tools.services.DownloadService;
 import com.mediaview.mediaview.tools.services.UpDateReceiver;
 
 import java.util.Calendar;
@@ -38,6 +37,7 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
 
+    //TODO connection internet + update des données
     ActionBarDrawerToggle mDrawerToggle;
 
     private CharSequence mDrawerTitle;

@@ -6,7 +6,7 @@ package com.mediaview.mediaview.tools;
  */
 public class Constants {
     //DATABASE
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
     //LOG TAGS
     public static final String CREATION_TAG = "CREATION_ERROR";
     public static final String DL_ERROR = "DOWNLAOD_ERROR";
