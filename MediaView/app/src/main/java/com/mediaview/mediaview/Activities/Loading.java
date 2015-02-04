@@ -40,6 +40,7 @@ public class Loading extends Activity {
             if(action.equals(DownloadService.LOADING_KEY)){
                 Intent intent2Launch = new Intent(activity, MainActivity.class);
                 startActivity(intent2Launch);
+                activity.finish();
             }
 
             unregisterReceiver(receiver);

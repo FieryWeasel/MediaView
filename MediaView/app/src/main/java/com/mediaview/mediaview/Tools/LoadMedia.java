@@ -12,6 +12,7 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.mediaview.mediaview.R;
 import com.mediaview.mediaview.model.Media;
 
 import com.squareup.picasso.Picasso;
@@ -31,7 +32,12 @@ public class LoadMedia {
         if(media.getType() != Media.EType.Image)
             return false;
 
-        Picasso.with(context).load(media.getUrl()).into(container);
+        Picasso.with(context)
+                .load(Constants.MEDIA_URL + media.getUrl())
+                .placeholder(R.drawable.ic_images)
+                .error(R.drawable.ic_audios)
+                .into(container);
+
 
         return true;
     }
@@ -41,10 +47,10 @@ public class LoadMedia {
             return false;
 
         MediaController mc = new MediaController(context);
-        mc.setAnchorView(container);
-        mc.setMediaPlayer(container);
+        //mc.setAnchorView(container);
+        //mc.setMediaPlayer(container);
 
-        Uri video = Uri.parse(media.getUrl());
+        Uri video = Uri.parse(Constants.MEDIA_URL + media.getUrl());
 
         container.setMediaController(mc);
         container.setVideoURI(video);
@@ -61,7 +67,7 @@ public class LoadMedia {
         mc.setAnchorView(container);
         mc.setMediaPlayer(container);
 
-        Uri video = Uri.parse(media.getUrl());
+        Uri video = Uri.parse(Constants.MEDIA_URL + media.getUrl());
 
         container.setMediaController(mc);
         container.setVideoURI(video);
@@ -74,17 +80,17 @@ public class LoadMedia {
         if(media.getType() != Media.EType.Texte)
             return false;
 
-        new DownloadTask().execute(media.getUrl(), container);
+        new DownloadTask().execute(Constants.MEDIA_URL + media.getUrl(), container);
 
         return true;
     }
 
     private class DownloadTask extends AsyncTask<Object, Long, String> {
-        EditText container;
+        TextView container;
 
         protected String doInBackground(Object... params) {
             try {
-                container = (EditText) params[1];
+                container = (TextView) params[1];
                 return HttpRequest.get((String)params[0]).body();
             } catch (com.github.kevinsawicki.http.HttpRequest.HttpRequestException exception) {
                 return null;
