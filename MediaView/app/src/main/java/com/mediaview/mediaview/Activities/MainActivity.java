@@ -26,10 +26,8 @@ import com.mediaview.mediaview.Fragments.MediasViewFragment;
 import com.mediaview.mediaview.Fragments.nav_drawer.ObjectDrawerItem;
 import com.mediaview.mediaview.Fragments.nav_drawer.DrawerItemCustomAdapter;
 import com.mediaview.mediaview.tools.Constants;
-import com.mediaview.mediaview.tools.DBManager;
-import com.mediaview.mediaview.tools.Manager;
-import com.mediaview.mediaview.tools.Services.DownloadService;
-import com.mediaview.mediaview.tools.Services.UpDateReceiver;
+import com.mediaview.mediaview.tools.services.DownloadService;
+import com.mediaview.mediaview.tools.services.UpDateReceiver;
 
 import java.util.Calendar;
 
@@ -50,8 +48,6 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DBManager db = new DBManager(this);
-        Manager.getInstance().setDbManager(db);
         initAlarmBroadcast();
 
         Intent intent = new Intent(this, DownloadService.class);

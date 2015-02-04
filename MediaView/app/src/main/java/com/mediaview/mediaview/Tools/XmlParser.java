@@ -1,7 +1,9 @@
 package com.mediaview.mediaview.tools;
 
+import android.content.Context;
 import android.util.Xml;
 
+import com.mediaview.mediaview.DAO.accessor.MediaDataAccessor;
 import com.mediaview.mediaview.model.Media;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -21,19 +23,18 @@ public class XmlParser {
     private static final String ns = null;
     private static final String ELEMENT = "media";
     private static final String ROOT_ELEMENT = "medias";
+    private Context mContext;
 
-    public static List<Media> parse(InputStream in){
+    public XmlParser(Context mContext) {
+        this.mContext = mContext;
+    }
+
+    public List<Media> parse(InputStream in){
         XmlPullParser parser = Xml.newPullParser();
         try {
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(in, null);
 
-
-
-
-//            parser.nextTag();
-//
-//            in.close();
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         }
@@ -41,10 +42,10 @@ public class XmlParser {
 //        return readFeed(parser);
     }
 
-    private static List<Media> parseXML(XmlPullParser parser) {
+    private List<Media> parseXML(XmlPullParser parser) {
 
         List<Media> medias = null;
-
+        MediaDataAccessor accessor = new MediaDataAccessor(mContext);
         try{
             int eventType = parser.getEventType();
             Media currentMedia = null;
@@ -64,19 +65,26 @@ public class XmlParser {
 
                         if (name.equalsIgnoreCase(ELEMENT)){
 
-                            currentMedia = new Media();
+                            int version = Integer.parseInt(parser.getAttributeValue(null, "versionCode"));
+                            String nameMedia = parser.getAttributeValue(null, "name");
+                            String type = parser.getAttributeValue(null, "type");
+                            String path = parser.getAttributeValue(null, "path");
 
-                            currentMedia.setId(++id);
+                            if(accessor.isNewMedia(version, nameMedia, type, path)) {
+                                currentMedia = new Media();
 
-                            currentMedia.setName(parser.getAttributeValue(null, "name"));
+                                currentMedia.setId(++id);
 
-                            currentMedia.setType(Manager.getInstance().getEnumFromString(parser.getAttributeValue(null, "type")));
+                                currentMedia.setName(nameMedia);
 
-                            currentMedia.setUrl(parser.getAttributeValue(null, "path"));
+                                currentMedia.setType(Manager.getInstance().getEnumFromString(type));
 
-                            currentMedia.setVersion(Integer.parseInt(parser.getAttributeValue(null, "versionCode")));
+                                currentMedia.setUrl(path);
 
-                            medias.add(currentMedia);
+                                currentMedia.setVersion(version);
+
+                                medias.add(currentMedia);
+                            }
 
                         }
                         break;

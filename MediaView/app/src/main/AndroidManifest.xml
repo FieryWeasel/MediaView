@@ -19,14 +19,14 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".tools.Services.UpDateReceiver" >
+        <receiver android:name=".tools.services.UpDateReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name=".tools.Services.DownloadService">
+            android:name=".tools.services.DownloadService">
         </service>
     </application>
 

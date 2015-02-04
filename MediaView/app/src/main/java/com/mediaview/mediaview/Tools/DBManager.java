@@ -1,17 +1,10 @@
 package com.mediaview.mediaview.tools;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-
-import com.mediaview.mediaview.model.Media;
-
-import java.util.ArrayList;
 
 /**
  * Created by Kazuya on 14/11/2014.

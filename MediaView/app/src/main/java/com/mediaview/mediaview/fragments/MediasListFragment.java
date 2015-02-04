@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 import com.mediaview.mediaview.model.Media;
 import com.mediaview.mediaview.R;
-import com.mediaview.mediaview.Adapter.MediasListAdapter;
+import com.mediaview.mediaview.adapter.MediasListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.mediaview.mediaview.Adapter;
+package com.mediaview.mediaview.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

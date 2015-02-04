@@ -134,4 +134,25 @@ public class MediaDataAccessor {
         db.close();
         return medias;
     }
+
+    public boolean isNewMedia(int version, String nameMedia, String type, String path) {
+        int count;
+        SQLiteDatabase db = mDBManager.getReadableDatabase();
+        Cursor c;
+        try {
+
+            c = db.rawQuery("SELECT * FROM "+MEDIA_TABLE+" WHERE "+MEDIA_VERSION+" = ? AND "+MEDIA_NOM+" = ? AND "
+                            +MEDIA_TYPE+" = ? AND "+MEDIA_URL+" = ?",
+                    new String[] {String.valueOf(version), nameMedia, type, path} );
+
+            count = c.getCount();
+            c.close();
+        }catch (SQLiteException e) {
+            Log.d("isNewMedia", "error getting Media : " + e.getMessage());
+            count = -1;
+        }
+        db.close();
+
+        return count == 0;
+    }
 }

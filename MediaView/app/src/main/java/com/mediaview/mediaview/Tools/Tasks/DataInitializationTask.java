@@ -39,10 +39,12 @@ public class DataInitializationTask {
         protected Void doInBackground(Void... voids) {
             InputStream stream = DownloadHelper.loadFile(Constants.FILE_URL);
 
-                if(stream !=null)
-                    medias = XmlParser.parse(stream);
-
             MediaDataAccessor mediaAccessor = new MediaDataAccessor(context);
+
+            XmlParser parser = new XmlParser(context);
+                if(stream !=null)
+                    medias = parser.parse(stream);
+
             for(Media media : medias)
                 mediaAccessor.createMedia(media);
 
