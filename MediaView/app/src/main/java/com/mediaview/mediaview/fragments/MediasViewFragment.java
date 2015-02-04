@@ -11,6 +11,7 @@ import android.widget.VideoView;
 
 import com.mediaview.mediaview.model.Media;
 import com.mediaview.mediaview.R;
+import com.mediaview.mediaview.tools.LoadMedia;
 
 /**
  * Created by IEM on 14/11/2014.
@@ -25,22 +26,27 @@ public class MediasViewFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.media_fragment_list, container, false);
+        View rootView = inflater.inflate(R.layout.media_fragment_view, container, false);
 
         initComponent(rootView);
+        LoadMedia loadMedia = new LoadMedia(getActivity());
 
         switch (media.getType()){
             case Audio:
-                setVisibility(View.VISIBLE, View.GONE, View.GONE);
+                setVisibility(View.GONE, View.GONE, View.VISIBLE);
+                loadMedia.loadAudio(media, UIVideoView);
                 break;
             case Video:
-                setVisibility(View.VISIBLE, View.GONE, View.GONE);
+                setVisibility(View.GONE, View.GONE, View.VISIBLE);
+                loadMedia.loadVideo(media, UIVideoView);
                 break;
             case Texte:
                 setVisibility(View.GONE, View.VISIBLE, View.GONE);
+                loadMedia.loadText(media, UITextView);
                 break;
             case Image:
-                setVisibility(View.GONE, View.GONE, View.VISIBLE);
+                setVisibility(View.VISIBLE, View.GONE, View.GONE);
+                loadMedia.loadImage(media, UIImageView);
                 break;
         }
 

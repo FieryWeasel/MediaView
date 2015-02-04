@@ -50,9 +50,6 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
 
         initAlarmBroadcast();
 
-        Intent intent = new Intent(this, DownloadService.class);
-        startService(intent);
-
         isTablet = getResources().getBoolean(R.bool.isTablet);
         if(isTablet){
             setContentView(R.layout.activity_main_double);
@@ -172,23 +169,25 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
         Fragment fragment = new MediasListFragment();
         ( (MediasListFragment) fragment).setMediaType(type);
 
-        return createFragment(fragment);
+        return createFragment(fragment, "TAG_F_LIST");
     }
 
     private boolean createFragmentView(Media media) {
-        Fragment fragment = new MediasListFragment();
+        Fragment fragment = new MediasViewFragment();
         ( (MediasViewFragment) fragment).setMedia(media);
 
-        return createFragment(fragment);
+        return createFragment(fragment, "TAG_F_VIEW");
     }
 
-    private boolean createFragment(Fragment fragment) {
+    private boolean createFragment(Fragment fragment, String tag) {
         boolean isFragementCreated = false;
 
         // TODO : Créer le fragment sur le bon frameLayout en fonction de "isTablet" (first -> replace / second)
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame_first, fragment).commit();
+            fragmentManager.beginTransaction()
+                    .addToBackStack(tag)
+                    .replace(R.id.content_frame_first, fragment).commit();
             isFragementCreated = true;
         } else {
             Log.e("MainActivity", "Error in creating fragment");
@@ -237,5 +236,11 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
 //        alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        getFragmentManager().popBackStack();
     }
 }

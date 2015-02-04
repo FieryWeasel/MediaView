@@ -143,7 +143,7 @@ public class MediaDataAccessor {
 
             c = db.rawQuery("SELECT * FROM "+MEDIA_TABLE+" WHERE "+MEDIA_VERSION+" = ? AND "+MEDIA_NOM+" = ? AND "
                             +MEDIA_TYPE+" = ? AND "+MEDIA_URL+" = ?",
-                    new String[] {String.valueOf(version), nameMedia, type, path} );
+                    new String[] {String.valueOf(version), nameMedia, Manager.getInstance().getEnumFromString(type).toString(), path} );
 
             count = c.getCount();
             c.close();

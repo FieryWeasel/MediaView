@@ -54,8 +54,6 @@ public class DataInitializationTask {
             for(Media media : medias)
                 mediaAccessor.createMedia(media);
 
-            Manager.getInstance().setAllMedias(medias);
-
             try {
                 stream.close();
             } catch (IOException e) {

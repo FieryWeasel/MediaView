@@ -36,14 +36,17 @@ public class MediasListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.media_fragment_list, container, false);
 
         final ListView list = (ListView) rootView.findViewById(R.id.media_list_listView);
+
+        MediaDataAccessor mediaAccessor = new MediaDataAccessor(getActivity().getApplicationContext());
+        medias = mediaAccessor.getMediaByType(type.toString());
+
         Media[] mediasTab = new Media[medias.size()];
         list.setAdapter(new MediasListAdapter(getActivity(), medias.toArray(mediasTab)));
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
-                Media m = (Media) parent.getItemAtPosition(position);
                 if(listener != null)
-                    listener.onElementSelected(m);
+                    listener.onElementSelected(medias.get(position));
             }
         });
 
@@ -62,7 +65,5 @@ public class MediasListFragment extends Fragment {
 
     public void setMediaType(Media.EType type){
         this.type = type;
-        MediaDataAccessor mediaAccessor = new MediaDataAccessor(getActivity());
-        medias = mediaAccessor.getMediaByType(type.toString());
     }
 }
