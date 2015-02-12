@@ -1,11 +1,8 @@
 package com.mediaview.mediaview.fragments;
 
 import android.app.Fragment;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,18 +17,15 @@ import com.mediaview.mediaview.DAO.accessor.MediaDataAccessor;
 import com.mediaview.mediaview.model.Media;
 import com.mediaview.mediaview.R;
 import com.mediaview.mediaview.tools.Constants;
+import com.mediaview.mediaview.tools.DownloadMedia;
 import com.mediaview.mediaview.tools.LoadMedia;
-import com.mediaview.mediaview.tools.tasks.DownloadTask;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 
 /**
  * Created by IEM on 14/11/2014.
  */
-public class MediasViewFragment extends Fragment implements DownloadTask.DownloadEventListener {
+public class MediasViewFragment extends Fragment implements DownloadMedia.DownloadMediaEventListener {
 
     private static Media media;
 
@@ -40,12 +34,18 @@ public class MediasViewFragment extends Fragment implements DownloadTask.Downloa
     private VideoView UIVideoView = null;
     private Button UIButtonDownload;
     private Button UIButtonDelete;
+    private ImageView UIiv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.media_fragment_view, container, false);
 
         initComponent(rootView);
+
+        Drawable d = Drawable.createFromPath(Uri.parse(Constants.MEDIA_URL + media.getUrl()).getPath());
+        UIiv = (ImageView)rootView.findViewById(R.id.ivMediaDisplay);
+        UIiv.setImageDrawable(d);
+
         LoadMedia loadMedia = new LoadMedia(getActivity());
 
         switch (media.getType()){
@@ -76,6 +76,8 @@ public class MediasViewFragment extends Fragment implements DownloadTask.Downloa
     }
 
     private void initComponent(View rootView) {
+
+        DownloadMedia dlMedia = new DownloadMedia(media, getActivity(), this);
         UIImageView = (ImageView) rootView.findViewById(R.id.media_view_image);
         UITextView = (TextView) rootView.findViewById(R.id.media_view_text);
         UIVideoView = (VideoView) rootView.findViewById(R.id.media_view_video);
@@ -95,7 +97,7 @@ public class MediasViewFragment extends Fragment implements DownloadTask.Downloa
                 File file = new File(root.getAbsolutePath() + Constants.DIRECTORY_SAVE + "/" + filename);
                 boolean deleted = file.delete();
                 if(deleted){
-                    deleteSuccessfull();
+                    deleteSuccessful();
                 }else{
                     deleteWithError();
                 }
@@ -103,89 +105,15 @@ public class MediasViewFragment extends Fragment implements DownloadTask.Downloa
         });
     }
 
-
-
-    private void downloadMedia() {
-        if(media.getType() == Media.EType.Image){
-
-            String filename = media.getUrl().substring(media.getUrl().lastIndexOf("/"));
-            Bitmap bmp = drawableToBitmap(UIImageView.getDrawable());
-
-            FileOutputStream out = null;
-
-            File root = android.os.Environment.getExternalStorageDirectory();
-            File dir = new File(root.getAbsolutePath() + Constants.DIRECTORY_SAVE);
-            if(!dir.exists()){
-                dir.mkdirs();
-            }
-
-            try {
-                out = new FileOutputStream(root.getAbsolutePath() + Constants.DIRECTORY_SAVE + "/" + filename);
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-                hasFinishSuccessfully();
-                // PNG is a lossless format, the compression factor (100) is ignored
-            } catch (Exception e) {
-                e.printStackTrace();
-                hasFinishWithError();
-            } finally {
-                try {
-                    if (out != null) {
-                        out.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-        }else if(media.getType() == Media.EType.Texte) {
-            try {
-                String fileName = media.getUrl().substring(media.getUrl().lastIndexOf("/"));
-                File root = android.os.Environment.getExternalStorageDirectory();
-                File dir = new File(root.getAbsolutePath() + Constants.DIRECTORY_SAVE);
-                if(!dir.exists()){
-                    dir.mkdirs();
-                }
-
-                File myFile = new File(dir, fileName);
-                myFile.createNewFile();
-                FileOutputStream fOut = new FileOutputStream(myFile);
-                OutputStreamWriter myOutWriter =
-                        new OutputStreamWriter(fOut);
-                myOutWriter.append(UITextView.getText());
-                myOutWriter.close();
-                fOut.close();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                hasFinishWithError();
-            }
-            hasFinishSuccessfully();
-        }else{
-                DownloadTask task = new DownloadTask(getActivity(), this);
-                task.execute(Constants.MEDIA_URL + media.getUrl());
-
-        }
-
-    }
-
-    public Bitmap drawableToBitmap (Drawable drawable) {
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable)drawable).getBitmap();
-        }
-
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-
-        return bitmap;
-    }
-
     private void setVisibility(int image, int text, int video) {
         UIImageView.setVisibility(image);
         UITextView.setVisibility(text);
         UIVideoView.setVisibility(video);
     }
+
+
+
+
 
     private void buttonsVisibility(int down, int delete){
         UIButtonDownload.setVisibility(down);
@@ -196,29 +124,27 @@ public class MediasViewFragment extends Fragment implements DownloadTask.Downloa
         this.media = media;
     }
 
-    @Override
-    public void hasFinishSuccessfully() {
-        Toast.makeText(getActivity(), "Download complete", Toast.LENGTH_LONG).show();
-        MediaDataAccessor dataAccessor = new MediaDataAccessor(getActivity());
-        dataAccessor.addMediaLocal(media);
 
-       buttonsVisibility(View.GONE, View.VISIBLE);
-    }
-
-    @Override
-    public void hasFinishWithError() {
-        Toast.makeText(getActivity(), "Error while downloading", Toast.LENGTH_LONG).show();
-    }
 
     private void deleteWithError() {
         Toast.makeText(getActivity(), "Error while deleting", Toast.LENGTH_LONG).show();
     }
 
-    private void deleteSuccessfull() {
+    private void deleteSuccessful() {
         Toast.makeText(getActivity(), "Delete complete", Toast.LENGTH_LONG).show();
         MediaDataAccessor dataAccessor = new MediaDataAccessor(getActivity());
         dataAccessor.deleteMediaLocal(media);
 
         buttonsVisibility(View.VISIBLE, View.GONE);
+    }
+
+    @Override
+    public void hasFinishSuccessfully() {
+        buttonsVisibility(View.GONE, View.VISIBLE);
+    }
+
+    @Override
+    public void hasFinishWithError() {
+        Toast.makeText(getActivity(), "Error while downloading", Toast.LENGTH_LONG).show();
     }
 }

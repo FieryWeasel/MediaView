@@ -141,15 +141,14 @@ public class MediaDataAccessor {
         return medias;
     }
 
-    public boolean isNewMedia(int version, String nameMedia, String type, String path) {
+    public boolean isNewMedia(String nameMedia) {
         int count;
         SQLiteDatabase db = mDBManager.getReadableDatabase();
         Cursor c;
         try {
 
-            c = db.rawQuery("SELECT * FROM "+MEDIA_TABLE+" WHERE "+MEDIA_VERSION+" = ? AND "+MEDIA_NOM+" = ? AND "
-                            +MEDIA_TYPE+" = ? AND "+MEDIA_URL+" = ?",
-                    new String[] {String.valueOf(version), nameMedia, Manager.getInstance().getEnumFromString(type).toString(), path} );
+            c = db.rawQuery("SELECT * FROM "+MEDIA_TABLE+" WHERE "+MEDIA_NOM+" LIKE ? ",
+                    new String[] {nameMedia} );
 
             count = c.getCount();
             c.close();
@@ -224,5 +223,25 @@ public class MediaDataAccessor {
         db.close();
 
         media.setLocal(false);
+    }
+
+    public boolean needToUpdate(String nameMedia, int version) {
+        int localVersion;
+        SQLiteDatabase db = mDBManager.getReadableDatabase();
+        Cursor c;
+        try {
+
+            c = db.rawQuery("SELECT "+MEDIA_VERSION+" FROM "+MEDIA_TABLE+" WHERE "+MEDIA_NOM+" LIKE ? ",
+                    new String[] {nameMedia} );
+
+            localVersion = c.getInt(0);
+            c.close();
+        }catch (SQLiteException e) {
+            Log.d("isNewMedia", "error getting Media : " + e.getMessage());
+            localVersion = -1;
+        }
+        db.close();
+
+        return localVersion != version;
     }
 }

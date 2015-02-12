@@ -70,7 +70,7 @@ public class XmlParser {
                             String type = parser.getAttributeValue(null, "type");
                             String path = parser.getAttributeValue(null, "path");
 
-                            if(accessor.isNewMedia(version, nameMedia, type, path)) {
+                            if(accessor.isNewMedia(nameMedia)) {
                                 currentMedia = new Media();
 
                                 currentMedia.setId(++id);
@@ -81,8 +81,11 @@ public class XmlParser {
                                 currentMedia.setLocal(false);
 
                                 medias.add(currentMedia);
+                            }else{
+                                if(accessor.needToUpdate(nameMedia, version)){
+                                    accessor.updateMedia(nameMedia, version, path);
+                                }
                             }
-
                         }
                         break;
 
