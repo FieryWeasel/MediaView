@@ -1,17 +1,10 @@
 package com.mediaview.mediaview.tools;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-
-import com.mediaview.mediaview.model.Media;
-
-import java.util.ArrayList;
 
 /**
  * Created by Kazuya on 14/11/2014.
@@ -43,7 +36,8 @@ public class DBManager extends SQLiteOpenHelper {
                 "mediaVersion INTEGER, " +
                 "mediaName VARCHAR(32), " +
                 "mediaURL VARCHAR(32)," +
-                "mediaType VARCHAR(32))";
+                "mediaType VARCHAR(32)," +
+                "mediaIsLocal VARCHAR(32))";
 
         // Creation tables
         try {
@@ -71,7 +65,8 @@ public class DBManager extends SQLiteOpenHelper {
                 "mediaVersion INTEGER, " +
                 "mediaName VARCHAR(32), " +
                 "mediaURL VARCHAR(32)," +
-                "mediaType VARCHAR(32))";
+                "mediaType VARCHAR(32), " +
+                "mediaIsLocal VARCHAR(32))";
 
         // Creation tables
         try {

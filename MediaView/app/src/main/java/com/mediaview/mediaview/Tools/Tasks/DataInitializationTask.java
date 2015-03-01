@@ -2,6 +2,8 @@ package com.mediaview.mediaview.tools.tasks;
 
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 
 
@@ -19,13 +21,19 @@ import java.util.List;
 
 public class DataInitializationTask {
 
+    public interface EventListener{
+        public void onFinished();
+    }
+
     private List<Media> medias;
     private Context context;
+    private EventListener listener = null;
 
 
-    public DataInitializationTask(Context context) {
+    public DataInitializationTask(Context context, EventListener listener) {
         new Task().execute();
         this.context = context;
+        this.listener = listener;
     }
 
     private class Task extends AsyncTask<Void, Void, Void> {
@@ -37,16 +45,19 @@ public class DataInitializationTask {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            if(!isNetworkAvailable())
+                return null;
+
             InputStream stream = DownloadHelper.loadFile(Constants.FILE_URL);
 
-                if(stream !=null)
-                    medias = XmlParser.parse(stream);
-
             MediaDataAccessor mediaAccessor = new MediaDataAccessor(context);
+
+            XmlParser parser = new XmlParser(context);
+                if(stream !=null)
+                    medias = parser.parse(stream);
+
             for(Media media : medias)
                 mediaAccessor.createMedia(media);
-
-            Manager.getInstance().setAllMedias(medias);
 
             try {
                 stream.close();
@@ -57,6 +68,18 @@ public class DataInitializationTask {
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            listener.onFinished();
+        }
+
+        private boolean isNetworkAvailable() {
+            ConnectivityManager connectivityManager
+                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        }
     }
 
 }

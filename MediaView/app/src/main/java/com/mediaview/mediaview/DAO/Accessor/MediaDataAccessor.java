@@ -23,6 +23,7 @@ public class MediaDataAccessor {
     public static final String MEDIA_URL = "mediaURL";
     public static final String MEDIA_TYPE = "mediaType";
     public static final String MEDIA_ID = "mediaId";
+    public static final String MEDIA_LOCAL = "mediaIsLocal";
     public static final String MEDIA_TABLE = "medias";
 
     private DBManager mDBManager;
@@ -34,24 +35,26 @@ public class MediaDataAccessor {
 
     public void createMedia(Media media){
         db = mDBManager.getReadableDatabase();
-        ContentValues values = new ContentValues(4);
+        ContentValues values = new ContentValues(5);
         values.put(MEDIA_VERSION, media.getVersion());
         values.put(MEDIA_NOM, media.getName());
         values.put(MEDIA_URL, media.getUrl());
         values.put(MEDIA_TYPE, media.getType().toString());
+        values.put(MEDIA_LOCAL, (media.isLocal() ? 1 : 0));
         long returnCode = db.insert(MEDIA_TABLE,MEDIA_ID,values);
         if(returnCode == -1){
             Log.e("Create_Media", "Error");
         }
     }
 
-    public void createMedia(int version, String name, String url, String type){
+    public void createMedia(int version, String name, String url, String type, boolean isLocal){
         db = mDBManager.getReadableDatabase();
-        ContentValues values = new ContentValues(4);
+        ContentValues values = new ContentValues(5);
         values.put(MEDIA_VERSION, version);
         values.put(MEDIA_NOM, name);
         values.put(MEDIA_URL, url);
         values.put(MEDIA_TYPE, type.toString());
+        values.put(MEDIA_LOCAL, (isLocal? 1 : 0));
         long returnCode = db.insert(MEDIA_TABLE,MEDIA_ID,values);
         if(returnCode == -1){
             Log.e("Create_Media", "Error");
@@ -68,6 +71,7 @@ public class MediaDataAccessor {
             media.setName(c.getString(2));
             media.setUrl(c.getString(3));
             media.setType(Manager.getInstance().getEnumFromString(c.getString(4)));
+            media.setLocal((c.getInt(5) == 0 ? false : true));
             c.close();
         }
         catch (SQLiteException e) {
@@ -93,6 +97,7 @@ public class MediaDataAccessor {
                 media.setName(c.getString(2));
                 media.setUrl(c.getString(3));
                 media.setType(Manager.getInstance().getEnumFromString(c.getString(4)));
+                media.setLocal((c.getInt(5) == 0 ? false : true));
                 eof = c.moveToNext();
                 medias.add(media);
             }
@@ -121,6 +126,7 @@ public class MediaDataAccessor {
                 media.setName(c.getString(2));
                 media.setUrl(c.getString(3));
                 media.setType(Manager.getInstance().getEnumFromString(c.getString(4)));
+                media.setLocal((c.getInt(5) == 0 ? false : true));
                 eof = c.moveToNext();
                 medias.add(media);
             }
@@ -133,5 +139,109 @@ public class MediaDataAccessor {
         }
         db.close();
         return medias;
+    }
+
+    public boolean isNewMedia(String nameMedia) {
+        int count;
+        SQLiteDatabase db = mDBManager.getReadableDatabase();
+        Cursor c;
+        try {
+
+            c = db.rawQuery("SELECT * FROM "+MEDIA_TABLE+" WHERE "+MEDIA_NOM+" LIKE ? ",
+                    new String[] {nameMedia} );
+
+            count = c.getCount();
+            c.close();
+        }catch (SQLiteException e) {
+            Log.d("isNewMedia", "error getting Media : " + e.getMessage());
+            count = -1;
+        }
+        db.close();
+
+        return count == 0;
+    }
+
+    /*
+    public boolean isMediaLocal(Media media){
+        int isLocal = 0;
+        SQLiteDatabase db = mDBManager.getReadableDatabase();
+        Cursor c;
+        try {
+
+            c = db.rawQuery("SELECT "+MEDIA_LOCAL+" FROM "+MEDIA_TABLE+" WHERE "+MEDIA_VERSION+" = ? AND "+MEDIA_NOM+" = ? AND "
+                            +MEDIA_TYPE+" = ? AND "+MEDIA_URL+" = ?",
+                    new String[] {String.valueOf(media.getVersion()), media.getName(), media.getType().toString(), media.getUrl()} );
+
+            boolean eof = c.moveToFirst();
+            while(eof){
+                isLocal = c.getInt(1);
+            }
+
+            c.close();
+        }catch (SQLiteException e) {
+            Log.d("isNewMedia", "error getting Media : " + e.getMessage());
+            isLocal = 0;
+        }
+        db.close();
+
+        return (isLocal == 0 ? false : true);
+    }*/
+
+    public void addMediaLocal(Media media){
+        SQLiteDatabase db = mDBManager.getReadableDatabase();
+
+        try {
+            ContentValues values = new ContentValues(1);
+            values.put(MEDIA_LOCAL, 1);
+            db.update(MEDIA_TABLE,
+                    values,
+                    MEDIA_VERSION+" = ? AND "+MEDIA_NOM+" = ? AND " +MEDIA_TYPE+" = ? AND "+MEDIA_URL+" = ?",
+                    new String[] {String.valueOf(media.getVersion()), media.getName(), media.getType().toString(), media.getUrl()});
+        }catch (SQLiteException e) {
+            Log.d("isNewMedia", "error getting Media : " + e.getMessage());
+        }
+
+        db.close();
+
+        media.setLocal(true);
+    }
+
+    public void deleteMediaLocal(Media media){
+        SQLiteDatabase db = mDBManager.getReadableDatabase();
+
+        try {
+            ContentValues values = new ContentValues(1);
+            values.put(MEDIA_LOCAL, 0);
+            db.update(MEDIA_TABLE,
+                    values,
+                    MEDIA_VERSION+" = ? AND "+MEDIA_NOM+" = ? AND " +MEDIA_TYPE+" = ? AND "+MEDIA_URL+" = ?",
+                    new String[] {String.valueOf(media.getVersion()), media.getName(), media.getType().toString(), media.getUrl()});
+        }catch (SQLiteException e) {
+            Log.d("isNewMedia", "error getting Media : " + e.getMessage());
+        }
+
+        db.close();
+
+        media.setLocal(false);
+    }
+
+    public boolean needToUpdate(String nameMedia, int version) {
+        int localVersion;
+        SQLiteDatabase db = mDBManager.getReadableDatabase();
+        Cursor c;
+        try {
+
+            c = db.rawQuery("SELECT "+MEDIA_VERSION+" FROM "+MEDIA_TABLE+" WHERE "+MEDIA_NOM+" LIKE ? ",
+                    new String[] {nameMedia} );
+
+            localVersion = c.getInt(0);
+            c.close();
+        }catch (SQLiteException e) {
+            Log.d("isNewMedia", "error getting Media : " + e.getMessage());
+            localVersion = -1;
+        }
+        db.close();
+
+        return localVersion != version;
     }
 }

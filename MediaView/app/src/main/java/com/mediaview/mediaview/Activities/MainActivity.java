@@ -19,17 +19,15 @@ import android.widget.ListView;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 
+import com.mediaview.mediaview.fragments.HomeFragment;
 import com.mediaview.mediaview.model.Media;
 import com.mediaview.mediaview.R;
-import com.mediaview.mediaview.Fragments.MediasListFragment;
-import com.mediaview.mediaview.Fragments.MediasViewFragment;
-import com.mediaview.mediaview.Fragments.nav_drawer.ObjectDrawerItem;
-import com.mediaview.mediaview.Fragments.nav_drawer.DrawerItemCustomAdapter;
+import com.mediaview.mediaview.fragments.MediasListFragment;
+import com.mediaview.mediaview.fragments.MediasViewFragment;
+import com.mediaview.mediaview.fragments.nav_drawer.ObjectDrawerItem;
+import com.mediaview.mediaview.fragments.nav_drawer.DrawerItemCustomAdapter;
 import com.mediaview.mediaview.tools.Constants;
-import com.mediaview.mediaview.tools.DBManager;
-import com.mediaview.mediaview.tools.Manager;
-import com.mediaview.mediaview.tools.Services.DownloadService;
-import com.mediaview.mediaview.tools.Services.UpDateReceiver;
+import com.mediaview.mediaview.tools.services.UpDateReceiver;
 
 import java.util.Calendar;
 
@@ -39,6 +37,7 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
 
+    //TODO connection internet + update des données
     ActionBarDrawerToggle mDrawerToggle;
 
     private CharSequence mDrawerTitle;
@@ -50,12 +49,7 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DBManager db = new DBManager(this);
-        Manager.getInstance().setDbManager(db);
         initAlarmBroadcast();
-
-        Intent intent = new Intent(this, DownloadService.class);
-        startService(intent);
 
         isTablet = getResources().getBoolean(R.bool.isTablet);
         if(isTablet){
@@ -64,6 +58,11 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
         }
         else
             setContentView(R.layout.activity_main_simple);
+
+        Fragment fragment = new HomeFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame_first, fragment).commit();
 
         initComponent();
         initNavigationDrawer();
@@ -176,23 +175,24 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
         Fragment fragment = new MediasListFragment();
         ( (MediasListFragment) fragment).setMediaType(type);
 
-        return createFragment(fragment);
+        return createFragment(fragment, "TAG_F_LIST");
     }
 
     private boolean createFragmentView(Media media) {
-        Fragment fragment = new MediasListFragment();
+        Fragment fragment = new MediasViewFragment();
         ( (MediasViewFragment) fragment).setMedia(media);
 
-        return createFragment(fragment);
+        return createFragment(fragment, "TAG_F_VIEW");
     }
 
-    private boolean createFragment(Fragment fragment) {
+    private boolean createFragment(Fragment fragment, String tag) {
         boolean isFragementCreated = false;
 
-        // TODO : Créer le fragment sur le bon frameLayout en fonction de "isTablet" (first -> replace / second)
         if (fragment != null) {
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame_first, fragment).commit();
+            fragmentManager.beginTransaction()
+                    .addToBackStack(tag)
+                    .replace(R.id.content_frame_first, fragment, tag).commit();
             isFragementCreated = true;
         } else {
             Log.e("MainActivity", "Error in creating fragment");
@@ -238,6 +238,14 @@ public class MainActivity extends Activity implements MediasListFragment.OnEleme
 
         AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarm.cancel(pendingIntent);
-        alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+//        alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        alarm.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        getFragmentManager().popBackStack();
     }
 }
